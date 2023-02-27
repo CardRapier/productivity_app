@@ -31,9 +31,19 @@ class Layout extends StatelessWidget {
               ListTile(
                 title: const Text('To-do ✅'),
                 onTap: () => context.goNamed(RoutesConstants.todo),
+              ),
+              ListTile(
+                title: const Text('Habits tracker ✅'),
+                onTap: () => context.goNamed(RoutesConstants.habits),
               )
             ],
           ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            context.pushNamed(RoutesConstants.createHabits);
+          },
+          child: const Icon(Icons.add),
         ),
         body: child);
   }

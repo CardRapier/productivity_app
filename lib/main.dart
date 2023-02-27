@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
+import 'package:productivity_app/modules/habits/models/habit.dart';
+import 'package:productivity_app/modules/habits/providers/habits_provider.dart';
 import 'package:productivity_app/router/my_router.dart';
+import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -9,11 +14,19 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      routerDelegate: MyRouter.router.routerDelegate,
-      routeInformationParser: MyRouter.router.routeInformationParser,
-      routeInformationProvider: MyRouter.router.routeInformationProvider,
-    );
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<HabitsProvider>(
+              create: (_) => HabitsProvider())
+        ],
+        child: Builder(
+            builder: (context) => MaterialApp.router(
+                  debugShowCheckedModeBanner: false,
+                  routerDelegate: MyRouter.router.routerDelegate,
+                  routeInformationParser:
+                      MyRouter.router.routeInformationParser,
+                  routeInformationProvider:
+                      MyRouter.router.routeInformationProvider,
+                )));
   }
 }
