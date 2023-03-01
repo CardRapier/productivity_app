@@ -1,5 +1,6 @@
 import 'package:isar/isar.dart';
 import 'package:productivity_app/modules/habits/models/habit.dart';
+import 'package:productivity_app/modules/habits/models/habit_daily.dart';
 
 class MyIsar {
   static Isar? _isar;
@@ -10,6 +11,6 @@ class MyIsar {
   }
 
   static Future<void> initializeIsarInstance() async {
-    _isar = await Isar.open([HabitSchema], inspector: true);
+    _isar = await Isar.open([HabitSchema, HabitDailySchema], inspector: true);
   }
 }

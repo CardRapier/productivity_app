@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
-import 'package:productivity_app/modules/habits/models/habit.dart';
 import 'package:productivity_app/modules/habits/providers/habits_provider.dart';
 import 'package:productivity_app/router/my_router.dart';
 import 'package:provider/provider.dart';

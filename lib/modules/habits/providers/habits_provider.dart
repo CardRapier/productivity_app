@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:productivity_app/modules/habits/habits_repo.dart';
 import 'package:productivity_app/modules/habits/models/habit.dart';
+import 'package:productivity_app/modules/habits/models/habit_daily.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class HabitsProvider extends ChangeNotifier {
-  late List<Habit> habits = [];
+  late List<HabitDaily> habits = [];
+
   bool _loading = false;
   bool get loading => _loading;
   set loading(bool value) {
@@ -21,12 +23,13 @@ class HabitsProvider extends ChangeNotifier {
     'value': FormControl<int>(validators: [Validators.number]),
   });
 
-  initState() {
+  HabitsProvider() {
     reloadInfo();
   }
 
   reloadInfo() async {
-    habits = await HabitsRepository.getHabits();
+    await HabitsRepository.generateDailyHabits();
+    habits = await HabitsRepository.getDailyHabits();
     notifyListeners();
   }
 
@@ -34,10 +37,21 @@ class HabitsProvider extends ChangeNotifier {
     var newHabit = Habit()
       ..name = createForm.control('name').value
       ..unit = createForm.control('unit').value ?? ''
-      ..desired = createForm.control('desired').value ?? 1
-      ..value = 0;
+      ..desired = createForm.control('desired').value ?? 1;
     await HabitsRepository.createHabit(newHabit);
-    habits = await HabitsRepository.getHabits();
+    await HabitsRepository.generateDailyHabits();
+    habits = await HabitsRepository.getDailyHabits();
+    createForm.resetState({});
+    notifyListeners();
+  }
+
+  progressInHabit(HabitDaily habit) async {
+    if (habit.habit.value!.desired > habit.value) habit.value++;
+    if (habit.status == Status.inProgress &&
+        habit.habit.value?.desired == habit.value) {
+      habit.status = Status.done;
+    }
+    await HabitsRepository.progressInHabit(habit);
     notifyListeners();
   }
 }

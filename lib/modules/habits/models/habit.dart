@@ -7,13 +7,7 @@ class Habit {
   @Index(type: IndexType.value)
   Id id = Isar.autoIncrement;
 
-  String? name;
-  String? unit;
-  int? value;
-  int? desired;
-
-  @enumerated
-  Status status = Status.unavailable;
+  String name = '';
+  String unit = '';
+  int desired = 1;
 }
-
-enum Status { inProgress, done, unavailable }
