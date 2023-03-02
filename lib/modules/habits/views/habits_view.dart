@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:productivity_app/global/components/layout.dart';
 import 'package:productivity_app/modules/habits/models/habit_daily.dart';
 import 'package:productivity_app/modules/habits/providers/habits_provider.dart';
+import 'package:productivity_app/router/routes_constants.dart';
 import 'package:provider/provider.dart';
 
 class HabitsView extends StatelessWidget {
@@ -12,6 +14,18 @@ class HabitsView extends StatelessWidget {
   Widget build(BuildContext context) {
     habitsProvider = Provider.of<HabitsProvider>(context);
     return Layout(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.pushNamed(RoutesConstants.createHabits);
+        },
+        child: const Icon(Icons.add),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.abc), label: 'Abc'),
+        ],
+      ),
         child: CustomScrollView(slivers: [
       SliverList(
           delegate: SliverChildBuilderDelegate(
@@ -26,7 +40,9 @@ class HabitsView extends StatelessWidget {
               .progressInHabit(habitsProvider.habits[index]),
         ),
         childCount: habitsProvider.habits.length,
-      )),
-    ]));
+          ),
+        ),
+      ]),
+    );
   }
 }

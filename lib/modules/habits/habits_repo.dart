@@ -7,7 +7,8 @@ import 'package:collection/collection.dart';
 class HabitsRepository {
   static Future<List<HabitDaily>> getDailyHabits() async {
     final isar = await MyIsar.getIsarInstance();
-    return await isar.habitDailys.where().findAll();
+    final now = Utils.getDailyDate();
+    return await isar.habitDailys.where().filter().dayEqualTo(now).findAll();
   }
 
   static Future<List<Habit>> getHabits() async {
